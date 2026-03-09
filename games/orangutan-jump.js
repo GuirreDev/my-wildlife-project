@@ -5,20 +5,29 @@ const orangScoreEl = document.getElementById("orangutanScore");
 let orangAnimationId;
 let orangutan;
 let machines = [];
+let trees = [];
 let orangFrames = 0;
 let orangDistance = 0;
+let gameSpeed = 4;
 
 function startOrangutanGame() {
     cancelAnimationFrame(orangAnimationId);
     
     orangutan = { 
         x: 50, y: 300, width: 40, height: 40, 
-        dy: 0, gravity: 0.6, jumpPower: -12, grounded: false 
+        dy: 0, gravity: 0.8, jumpPower: -14, grounded: false, rotation: 0 
     };
     machines = [];
+    trees = [];
     orangFrames = 0;
     orangDistance = 0;
+    gameSpeed = 4;
     orangScoreEl.innerText = orangDistance;
+
+    // Generate initial trees
+    for(let i=0; i<5; i++) {
+        trees.push({ x: Math.random() * orangCanvas.width, size: Math.random() * 30 + 30 });
+    }
 
     updateOrangutanGame();
 }
@@ -28,49 +37,69 @@ function stopOrangutanGame() {
 }
 
 function updateOrangutanGame() {
-    // Background
-    orangCtx.fillStyle = "#A9DFBF"; // Jungle sky
+    // Background Sky
+    let skyGradient = orangCtx.createLinearGradient(0, 0, 0, 340);
+    skyGradient.addColorStop(0, "#82E0AA");
+    skyGradient.addColorStop(1, "#FAD7A1");
+    orangCtx.fillStyle = skyGradient;
     orangCtx.fillRect(0, 0, orangCanvas.width, orangCanvas.height);
     
+    // Parallax Trees
+    orangCtx.fillStyle = "#27AE60";
+    trees.forEach(tree => {
+        tree.x -= gameSpeed * 0.3; // Slower than foreground
+        if(tree.x + tree.size < 0) tree.x = orangCanvas.width;
+        orangCtx.beginPath();
+        orangCtx.moveTo(tree.x, 340);
+        orangCtx.lineTo(tree.x + tree.size/2, 340 - tree.size*1.5);
+        orangCtx.lineTo(tree.x + tree.size, 340);
+        orangCtx.fill();
+    });
+
     // Ground
-    orangCtx.fillStyle = "#8B4513";
+    orangCtx.fillStyle = "#6E2C00";
     orangCtx.fillRect(0, 340, orangCanvas.width, 60);
 
-    // Gravity
+    // Gravity & Physics
     orangutan.dy += orangutan.gravity;
     orangutan.y += orangutan.dy;
 
-    // Floor collision
     if (orangutan.y + orangutan.height >= 340) {
         orangutan.y = 340 - orangutan.height;
         orangutan.dy = 0;
         orangutan.grounded = true;
+        orangutan.rotation = 0;
     } else {
         orangutan.grounded = false;
+        orangutan.rotation += 0.1; // Spin while jumping
     }
 
     // Draw Orangutan
-    orangCtx.fillStyle = "#d35400"; // Orange-brown
-    // Tip: Use ctx.drawImage(orangutanImg, ...)
-    orangCtx.fillRect(orangutan.x, orangutan.y, orangutan.width, orangutan.height);
+    orangCtx.save();
+    orangCtx.translate(orangutan.x + orangutan.width/2, orangutan.y + orangutan.height/2);
+    orangCtx.rotate(orangutan.rotation);
+    orangCtx.font = "40px Arial";
+    orangCtx.textAlign = "center";
+    orangCtx.textBaseline = "middle";
+    orangCtx.fillText("🦧", 0, 0);
+    orangCtx.restore();
 
-    // Handle Deforestation Machines (Obstacles)
-    if (orangFrames % 90 === 0) {
-        machines.push({ x: orangCanvas.width, y: 300, width: 40, height: 40, speed: 4 });
+    // Deforestation Machines
+    if (orangFrames % Math.floor(Math.random() * 40 + 60) === 0) {
+        machines.push({ x: orangCanvas.width, y: 300, width: 40, height: 40 });
     }
 
     for (let i = 0; i < machines.length; i++) {
-        machines[i].x -= machines[i].speed;
+        machines[i].x -= gameSpeed;
         
-        orangCtx.fillStyle = "#2c3e50"; // Dark machine color
-        // Tip: Use ctx.drawImage(machineImg, ...)
-        orangCtx.fillRect(machines[i].x, machines[i].y, machines[i].width, machines[i].height);
+        orangCtx.font = "40px Arial";
+        orangCtx.fillText("🚜", machines[i].x, machines[i].y + 35);
 
-        // Collision detection
-        if (orangutan.x < machines[i].x + machines[i].width &&
-            orangutan.x + orangutan.width > machines[i].x &&
-            orangutan.y < machines[i].y + machines[i].height &&
-            orangutan.y + orangutan.height > machines[i].y) {
+        // Precise Collision
+        if (orangutan.x + 10 < machines[i].x + machines[i].width - 10 &&
+            orangutan.x + orangutan.width - 10 > machines[i].x + 10 &&
+            orangutan.y + 10 < machines[i].y + machines[i].height - 10 &&
+            orangutan.y + orangutan.height - 10 > machines[i].y + 10) {
             
             stopOrangutanGame();
             alert(`Game Over! The forest is shrinking. You traveled ${Math.floor(orangDistance / 10)} meters.`);
@@ -78,29 +107,29 @@ function updateOrangutanGame() {
         }
     }
 
-    // Remove off-screen machines
     machines = machines.filter(m => m.x + m.width > 0);
 
-    // Score
+    // Difficulty and Score Scaling
     orangDistance++;
     if (orangDistance % 10 === 0) {
         orangScoreEl.innerText = Math.floor(orangDistance / 10);
+    }
+    if (orangDistance % 200 === 0) {
+        gameSpeed += 0.5; // Speed increases over time
     }
 
     orangFrames++;
     orangAnimationId = requestAnimationFrame(updateOrangutanGame);
 }
 
-// Jump Control
 window.addEventListener("keydown", (e) => {
-    if (e.code === "Space" && orangutan.grounded) {
-        e.preventDefault(); // Stop page scrolling
+    if ((e.code === "Space" || e.code === "ArrowUp") && orangutan.grounded) {
+        e.preventDefault();
         orangutan.dy = orangutan.jumpPower;
         orangutan.grounded = false;
     }
 });
 
-// Touch control for mobile
 orangCanvas.addEventListener("touchstart", (e) => {
     e.preventDefault();
     if (orangutan.grounded) {
