@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildGuard | Protect Our Animals</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🌿 WildGuard</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#endangered">Endangered Animals</a></li>
+            <li><a href="#education">Animal Abuse</a></li>
+            <li><a href="#minigames">Mini Games</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Their Future is in Our Hands</h1>
+            <p>Learn about endangered species, understand the impact of animal abuse, and take action to protect wildlife globally.</p>
+            <a href="#endangered" class="btn">Meet the Animals</a>
+        </div>
+    </section>
+
+    <section id="endangered" class="section-padding">
+        <h2>Endangered Species Watchlist</h2>
+        <p class="section-subtitle">Learn about the animals that need our help the most.</p>
+        <div class="grid-container" id="animal-grid">
+            </div>
+    </section>
+
+    <section id="education" class="section-padding dark-bg">
+        <div class="container">
+            <h2>The Reality of Animal Abuse</h2>
+            <div class="edu-content">
+                <div class="edu-text">
+                    <h3>Understanding the Crisis</h3>
+                    <p>Animal abuse comes in many forms, from domestic neglect to industrial habitat destruction. Deforestation, poaching, illegal wildlife trade, and pollution are driving countless species to the brink of extinction.</p>
+                    <ul>
+                        <li><strong>Habitat Loss:</strong> 80% of terrestrial species live in forests. Deforestation destroys their homes.</li>
+                        <li><strong>Poaching:</strong> Illegal hunting for trophies, tusks, and traditional medicine decimates wild populations.</li>
+                        <li><strong>Pollution:</strong> Millions of marine animals die each year from ocean plastic and toxic runoff.</li>
+                    </ul>
+                    <p>Education and awareness are the first steps toward ending this cruelty. By understanding their plight, we can advocate for stricter laws and support conservation efforts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="minigames" class="section-padding">
+        <h2>Interactive Learning</h2>
+        <p class="section-subtitle">Play these mini-games to understand the daily struggles of wildlife.</p>
+        
+        <div class="game-controls">
+            <button class="game-btn active" onclick="switchGame('beaver')">Beaver Forager</button>
+            <button class="game-btn" onclick="switchGame('turtle')">Turtle Escape</button>
+            <button class="game-btn" onclick="switchGame('orangutan')">Orangutan Jump</button>
+        </div>
+
+        <div class="game-container">
+            <div id="beaver-game-wrapper" class="game-wrapper active">
+                <h3>Beaver Forager</h3>
+                <p>Use Arrow Keys to collect logs to build your dam! Don't bite your own tail or hit the walls.</p>
+                <canvas id="beaverCanvas" width="600" height="400"></canvas>
+                <div class="score-board">Score: <span id="beaverScore">0</span></div>
+                <button class="btn" onclick="startBeaverGame()">Start Game</button>
+            </div>
+
+            <div id="turtle-game-wrapper" class="game-wrapper">
+                <h3>Turtle Escape</h3>
+                <p>Use Arrow Keys to swim. Dodge the falling fishing nets to survive!</p>
+                <canvas id="turtleCanvas" width="600" height="400"></canvas>
+                <div class="score-board">Time Survived: <span id="turtleScore">0</span>s</div>
+                <button class="btn" onclick="startTurtleGame()">Start Game</button>
+            </div>
+
+            <div id="orangutan-game-wrapper" class="game-wrapper">
+                <h3>Orangutan Jump</h3>
+                <p>Press SPACE or tap to jump over the deforestation machines!</p>
+                <canvas id="orangutanCanvas" width="600" height="400"></canvas>
+                <div class="score-board">Distance: <span id="orangutanScore">0</span>m</div>
+                <button class="btn" onclick="startOrangutanGame()">Start Game</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 WildGuard | Dedicated to global wildlife conservation.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="games/beaver-snake.js"></script>
+    <script src="games/turtle-escape.js"></script>
+    <script src="games/orangutan-jump.js"></script>
+</body>
+</html>
