@@ -4,7 +4,7 @@ const animals = [
         name: "Eurasian Beaver",
         status: "Vulnerable",
         statusClass: "vulnerable",
-        image: "https://images.unsplash.com/photo-1620067984852-52026858e3cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        image: "https://images.takeshape.io/86ce9525-f5f2-4e97-81ba-54e8ce933da7/dev/379f4335-4f44-4229-81ea-89d9f53383a0/Eurasian%20Beaver%20close%20up%20(male)%20dreamstime_xxl_36802617.webp",
         description: "Known as nature's architects, beavers create wetlands that support diverse ecosystems.",
         cause: "Historically hunted to near extinction for their fur and meat; habitat loss."
     },
@@ -91,4 +91,5 @@ function switchGame(gameName) {
     if(typeof stopBeaverGame === 'function') stopBeaverGame();
     if(typeof stopTurtleGame === 'function') stopTurtleGame();
     if(typeof stopOrangutanGame === 'function') stopOrangutanGame();
+
 }
