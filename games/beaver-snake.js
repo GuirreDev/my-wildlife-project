@@ -138,6 +138,7 @@ function gameOver(msg) {
     beaverCtx.fillText(msg, beaverCanvas.width/2, beaverCanvas.height/2);
 }
 
+// Keyboard Controls
 window.addEventListener("keydown", e => {
     const last = inputQueue.length > 0 ? inputQueue[inputQueue.length-1] : {vx: velocityX, vy: velocityY};
     if (e.key === "ArrowUp" && last.vy !== 1) inputQueue.push({vx:0, vy:-1});
@@ -145,3 +146,44 @@ window.addEventListener("keydown", e => {
     if (e.key === "ArrowLeft" && last.vx !== 1) inputQueue.push({vx:-1, vy:0});
     if (e.key === "ArrowRight" && last.vx !== -1) inputQueue.push({vx:1, vy:0});
 });
+
+// Mobile Swipe Controls
+let touchStartX = null;
+let touchStartY = null;
+
+beaverCanvas.addEventListener("touchstart", e => {
+    e.preventDefault();
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, {passive: false});
+
+beaverCanvas.addEventListener("touchmove", e => e.preventDefault(), {passive: false});
+
+beaverCanvas.addEventListener("touchend", e => {
+    e.preventDefault();
+    if (touchStartX === null || touchStartY === null) return;
+    
+    let touchEndX = e.changedTouches[0].clientX;
+    let touchEndY = e.changedTouches[0].clientY;
+    
+    let dx = touchEndX - touchStartX;
+    let dy = touchEndY - touchStartY;
+    
+    const last = inputQueue.length > 0 ? inputQueue[inputQueue.length-1] : {vx: velocityX, vy: velocityY};
+    
+    // Threshold to prevent accidental micro-swipes
+    if (Math.abs(dx) > 20 || Math.abs(dy) > 20) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Horizontal swipe
+            if (dx > 0 && last.vx !== -1) inputQueue.push({vx: 1, vy: 0});
+            else if (dx < 0 && last.vx !== 1) inputQueue.push({vx: -1, vy: 0});
+        } else {
+            // Vertical swipe
+            if (dy > 0 && last.vy !== -1) inputQueue.push({vx: 0, vy: 1});
+            else if (dy < 0 && last.vy !== 1) inputQueue.push({vx: 0, vy: -1});
+        }
+    }
+    
+    touchStartX = null;
+    touchStartY = null;
+}, {passive: false});
