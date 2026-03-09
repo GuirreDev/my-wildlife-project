@@ -12,7 +12,7 @@ const animals = [
         name: "Bornean Orangutan",
         status: "Critically Endangered",
         statusClass: "critically-endangered",
-        image: "https://images.unsplash.com/photo-1541003713837-29d3807204eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        image: "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_800,h_532/https://neprimateconservancy.org/wp-content/uploads/2021/10/orangutan-mail-iStock-512542704-resize2.png",
         description: "Highly intelligent great apes known for their distinct red fur. They spend most of their time in trees.",
         cause: "Severe deforestation for palm oil plantations and illegal pet trade."
     },
@@ -36,7 +36,7 @@ const animals = [
         name: "Asian Elephant",
         status: "Endangered",
         statusClass: "endangered",
-        image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        image: "https://upload.wikimedia.org/wikipedia/commons/9/98/Elephas_maximus_%28Bandipur%29.jpg",
         description: "Highly social and intelligent mammals essential for maintaining forest and savanna ecosystems.",
         cause: "Habitat fragmentation, human-wildlife conflict, and poaching for ivory."
     },
@@ -44,7 +44,7 @@ const animals = [
         name: "Polar Bear",
         status: "Vulnerable",
         statusClass: "vulnerable",
-        image: "https://images.unsplash.com/photo-1544834789-9d7a28ff796c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        image: "https://cdn.wcs.org/2024/12/17/13/04/57/276bbd38-6a3b-4559-a9bc-26fde089eccb/hans-jurgen-mager-bySoVNCijy4-unsplash%20(1).jpg",
         description: "The apex predator of the Arctic, heavily dependent on sea ice for hunting seals.",
         cause: "Climate change causing rapid loss of sea ice habitat."
     }
@@ -93,3 +93,4 @@ function switchGame(gameName) {
     if(typeof stopOrangutanGame === 'function') stopOrangutanGame();
 
 }
+
